@@ -1,0 +1,70 @@
+---
+title       : Cars Prediction ShinyApp
+subtitle    : Predicting weight from miles per gallon
+author      : Shibdas Roy
+job         : PhD Student
+framework   : html5slides   # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+---
+
+## Cars Prediction ShinyApp
+
+- This app predicts the weight, given miles per gallon, for a car.
+- Internally, the app first fits a linear regression model to the 
+data from the mtcars dataset.
+- It outputs the predicted value of weight, reactively to the 
+user-input value of miles per gallon.
+- It also prints a plot with the predicted value highlighted on 
+the regression line.
+
+---
+
+## Regressor and Outcome
+
+- The mtcars dataset:
+
+```{r data, echo = TRUE}
+data(mtcars)
+head(mtcars)
+```
+
+- The regressor is the miles per gallon variable mpg.
+- The outcome is the weight variable wt.
+
+---
+
+## Regression Model
+
+- We fit a linear regression model as follows:
+
+```{r model, echo= TRUE}
+fit <- lm(wt~mpg,data=mtcars)
+fit
+```
+
+---
+
+## Prediction Result
+
+- The user inputs a value between 1 and 40 for miles per gallon.
+- The app predicts the weight using the model fit from the previous slide.
+- For example, the app by default shows the predicted value of weight for 
+the default value of 15 of miles per gallon:
+
+```{r predict, echo = TRUE}
+answer <- predict(fit,newdata=data.frame(mpg=15))
+answer
+```
+
+---
+
+## Model plot
+
+```{r plot, fig.height=6, echo = TRUE}
+plot(mtcars$mpg,mtcars$wt,pch=19,xlab="Miles per gallon"
+    ,ylab="Weight",xlim=c(1,40),ylim=c(0,6))
+abline(fit); points(15,answer,col='red',pch=19)
+```
